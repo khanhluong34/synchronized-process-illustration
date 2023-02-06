@@ -107,6 +107,13 @@
                      <VBox.margin>
                         <Insets bottom="4.0" />
                      </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/5.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </TitledPane>
                   <TitledPane collapsible="false" prefHeight="290.0" prefWidth="273.0" text="Transaction queue">
                      <content>
