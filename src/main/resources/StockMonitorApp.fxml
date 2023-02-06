@@ -24,11 +24,11 @@
                </font>
             </Text>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="startBtn" mnemonicParsing="false" text="Start Session">
+            <Button fx:id="btnStart" mnemonicParsing="false" onAction="#btnStartOnPressed" text="Start Session">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin></Button>
-            <Button fx:id="startBtn1" layoutX="706.0" layoutY="28.0" mnemonicParsing="false" text="About the app" />
+            <Button fx:id="btnAbout" layoutX="706.0" layoutY="28.0" mnemonicParsing="false" onAction="#btnAboutOnPressed" text="About the app" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />
@@ -36,9 +36,9 @@
       </HBox>
    </top>
    <center>
-      <HBox prefHeight="540.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="540.0" prefWidth="800.0" spacing="4.0" BorderPane.alignment="CENTER">
          <children>
-            <TitledPane collapsible="false" prefHeight="540.0" prefWidth="280.0" text="Transaction history">
+            <TitledPane collapsible="false" prefHeight="540.0" prefWidth="260.0" text="Transaction history">
                <content>
                   <TableView maxWidth="300.0" prefHeight="359.0" prefWidth="300.0">
                     <columns>
@@ -55,26 +55,40 @@
                      <content>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="FLC - HOSE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Text>
                               <VBox>
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="269.0">
                                        <children>
                                           <Label text="Quantity" />
-                                          <Text fx:id="qtyText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                          <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                          <Text fx:id="textQty" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                        </children>
                                     </HBox>
-                                    <HBox prefHeight="100.0" prefWidth="252.0" />
+                                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="269.0" style="-fx-background-color: #bbbb;">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </VBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                                  <children>
                                     <Label text="Trader" />
-                                    <Text fx:id="traderText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                    <Region prefHeight="79.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                    <Text fx:id="textTrader" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
                      </content>
+                     <VBox.margin>
+                        <Insets bottom="4.0" />
+                     </VBox.margin>
                   </TitledPane>
                   <TitledPane collapsible="false" prefHeight="290.0" prefWidth="273.0" text="Transaction queue">
                      <content>
@@ -118,7 +132,10 @@
                               </HBox>
                            </children>
                         </VBox>
-                     </content></TitledPane>
+                     </content>
+                     <padding>
+                        <Insets bottom="4.0" />
+                     </padding></TitledPane>
                   <TitledPane id="Clients" collapsible="false" prefWidth="200.0" text="Clients">
                      <content>
                         <VBox>
@@ -126,13 +143,15 @@
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label text="Buyer" />
-                                    <Text fx:id="buyText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                    <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
+                                    <Text fx:id="textBuy" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label text="Seller" />
-                                    <Text fx:id="sellText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                    <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
+                                    <Text fx:id="textSell" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
                               </HBox>
                            </children>
@@ -142,6 +161,12 @@
                </children>
             </VBox>
          </children>
+         <opaqueInsets>
+            <Insets left="2.0" right="2.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="4.0" left="4.0" right="4.0" />
+         </padding>
       </HBox>
    </center>
 </BorderPane>

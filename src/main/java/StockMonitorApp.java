@@ -4,11 +4,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
-public class StockTradingSystem extends Application {
+public class StockMonitorApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("StockTradingSystem.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("StockMonitorApp.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();

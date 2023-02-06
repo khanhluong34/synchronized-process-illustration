@@ -1,9 +1,15 @@
-class Stock {
+package model;
+
+public class StockMonitor {
     private String name;
     private int quantity;
     private double price;
 
-    public Stock(String name, int quantity, double price) {
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public StockMonitor(String name, int quantity, double price) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;

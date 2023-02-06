@@ -1,22 +1,41 @@
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import model.BuyerThread;
+import model.SellerThread;
+import model.StockMonitor;
 
 public class MonitorAppController {
 
     @FXML
-    private Text buyText;
+    private Button btnAbout;
 
     @FXML
-    private Text qtyText;
+    private Button btnStart;
 
     @FXML
-    private Text sellText;
+    private Text textBuy;
 
     @FXML
-    private Button startBtn;
+    private Text textQty;
 
     @FXML
-    private Text traderText;
+    private Text textSell;
+
+    @FXML
+    private Text textTrader;
+
+    @FXML
+    void btnAboutOnPressed(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnStartOnPressed(ActionEvent event) {
+
+    }
 
 }
