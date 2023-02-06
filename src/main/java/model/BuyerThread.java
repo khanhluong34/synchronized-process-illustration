@@ -12,6 +12,8 @@ public class BuyerThread extends Thread {
 
     @Override
     public void run() {
-        stockMonitor.buy(quantity);
+        while (true) {
+            stockMonitor.buy(quantity);
+        }
     }
 }
