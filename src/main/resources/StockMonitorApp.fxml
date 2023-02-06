@@ -60,7 +60,7 @@
                   </TableView>
                </content>
                <graphic>
-                  <ImageView fitHeight="46.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="39.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Images/2.png" />
                      </image>
