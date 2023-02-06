@@ -118,6 +118,13 @@
                            </columns>
                         </TableView>
                      </content>
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </TitledPane>
                </children>
             </VBox>
@@ -175,6 +182,13 @@
                            </children>
                         </VBox>
                      </content>
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="111.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/3.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </TitledPane>
                </children>
             </VBox>
