@@ -174,14 +174,28 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Buyer" />
+                                    <Label text="Buyer">
+                                       <graphic>
+                                          <ImageView fitHeight="33.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@Images/6.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                                     <Text fx:id="textBuy" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Seller" />
+                                    <Label prefHeight="28.0" prefWidth="67.0" text="Seller">
+                                       <graphic>
+                                          <ImageView fitHeight="38.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@Images/7.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Label>
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                                     <Text fx:id="textSell" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
