@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -14,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MonitorAppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MonitorAppController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -23,6 +29,11 @@
                   <Font size="21.0" />
                </font>
             </Text>
+            <ImageView fitHeight="52.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/1.png" />
+               </image>
+            </ImageView>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Button fx:id="btnStart" mnemonicParsing="false" onAction="#btnStartOnPressed" text="Start Session">
                <HBox.margin>
@@ -48,6 +59,13 @@
                     </columns>
                   </TableView>
                </content>
+               <graphic>
+                  <ImageView fitHeight="46.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/2.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </TitledPane>
             <VBox prefHeight="500.0" prefWidth="290.0">
                <children>
