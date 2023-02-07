@@ -12,8 +12,6 @@ public class SellerThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            stockMonitor.sell(quantity);
-        }
+            stockMonitor.sell(quantity, this.getName());
     }
 }

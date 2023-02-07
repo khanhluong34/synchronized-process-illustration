@@ -1,5 +1,7 @@
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -53,8 +55,18 @@ public class MonitorAppController {
     void btnStartOnPressed(ActionEvent event) {
         System.out.println("-----Start session-----");
         // initialize the stock monitor, buyers and sellers every time that user clicks the start button
-        initializeEntity();
-        startTrading();
+        this.monitor = new StockMonitor("FLC-HOSE", 100, 10);
+        while (true) {
+            initializeClient();
+            observable();
+            startTrading();
+            try {
+                Thread.sleep(3000); // Sleep for 1000 milliseconds (1 second)
+            } catch (InterruptedException e) {
+                // Handle the InterruptedException if it occurs
+            }
+        }
+
 
     }
     void startTrading() {
@@ -65,8 +77,7 @@ public class MonitorAppController {
                 this.sellers[i].start();
             }
     }
-    void initializeEntity() {
-        this.monitor = new StockMonitor("FLC-HOSE", 100, 10);
+    void initializeClient() {
 
         // get the number of buyers from the slider
         int noBuyers = (int) this.numberOfBuyers.getValue();
@@ -82,5 +93,11 @@ public class MonitorAppController {
         for (int i = 0; i < noSellers; i ++) {
             this.sellers[i] = new SellerThread(this.sellerNames[i], this.monitor, stockSelling[i]);
         }
+    }
+    void observable() {
+        StringProperty nameTextProperty = new SimpleStringProperty("None");
+        this.textTrader.textProperty().bind(nameTextProperty);
+        this.monitor.setNameTrader(nameTextProperty);
+
     }
 }

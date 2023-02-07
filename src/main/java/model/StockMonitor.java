@@ -1,9 +1,13 @@
 package model;
 
+import javafx.beans.property.StringProperty;
+import javafx.scene.text.Text;
+
 public class StockMonitor {
     private String name;
     private int quantity;
     private double price;
+    private StringProperty nameTrader;
 
     public int getQuantity() {
         return quantity;
@@ -14,12 +18,20 @@ public class StockMonitor {
         this.quantity = quantity;
         this.price = price;
     }
-    public synchronized void buy(int quantity) {
+
+    public void setContentNameTrader(String nameTrader) {
+        this.nameTrader.set(nameTrader);
+    }
+    public void setNameTrader(StringProperty textProperty) {
+        this.nameTrader = textProperty;
+    }
+    public synchronized void buy(int quantity, String nameTrader) {
+        this.setContentNameTrader(nameTrader);
         if (this.quantity < quantity) {
-            System.out.println("Not enough stocks available for purchase");
+            System.out.println("Not enough stocks available for purchase, " + nameTrader + " can not execute this transaction");
         } else {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(4000);
                 System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted: " + e.getMessage());
@@ -29,9 +41,10 @@ public class StockMonitor {
         }
     }
 
-    public synchronized void sell(int quantity) {
+    public synchronized void sell(int quantity, String nameTrader) {
+        this.setContentNameTrader(nameTrader);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(4000);
             System.out.println("Transaction time ...");
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted: " + e.getMessage());
