@@ -4,6 +4,8 @@ public class StockMonitor {
     private int quantity;
     private TradeRequest handlingRequest;
 
+    private TradeRequest[] queuedRequest;
+
     public int getQuantity() {
         return quantity;
     }
@@ -16,23 +18,30 @@ public class StockMonitor {
         this.quantity = quantity;
     }
 
-    public synchronized void buy(BuyRequest request) {
-        handlingRequest = request;
+    public synchronized void buy(TradeRequest request) {
+//        handlingRequest = request;
+//        if (this.quantity < request.getQuantity()) {
+//            System.out.println("Not enough stocks available for purchase, " + request.getNameTrader() + " can not execute this transaction");
+//        } else {
+//            try {
+//                Thread.sleep(2000);
+//                System.out.println("Transaction time ...");
+//            } catch (InterruptedException e) {
+//                System.out.println("Thread interrupted: " + e.getMessage());
+//            }
+//            this.quantity -= request.getQuantity();
+//            System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
+//        }
         if (this.quantity < request.getQuantity()) {
-            System.out.println("Not enough stocks available for purchase, " + request.getNameTrader() + " can not execute this transaction");
-        } else {
-            try {
-                Thread.sleep(2000);
-                System.out.println("Transaction time ...");
-            } catch (InterruptedException e) {
-                System.out.println("Thread interrupted: " + e.getMessage());
+            {
+                try { wait(); }
+                catch (InterruptedException ignored) { }
             }
-            this.quantity -= request.getQuantity();
-            System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
+
         }
     }
 
-    public synchronized void sell(SellRequest request) {
+    public synchronized void sell(TradeRequest request) {
         handlingRequest = request;
         try {
             Thread.sleep(2000);
