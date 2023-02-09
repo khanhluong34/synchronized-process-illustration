@@ -1,55 +1,46 @@
 package model;
 
-import javafx.beans.property.StringProperty;
-import javafx.scene.text.Text;
-
 public class StockMonitor {
-    private String name;
     private int quantity;
-    private double price;
-    private StringProperty nameTrader;
+    private TradeRequest handlingRequest;
 
     public int getQuantity() {
         return quantity;
     }
 
-    public StockMonitor(String name, int quantity, double price) {
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
+    public TradeRequest getHandlingRequest() {
+        return handlingRequest;
     }
 
-    public void setContentNameTrader(String nameTrader) {
-        this.nameTrader.set(nameTrader);
+    public StockMonitor(int quantity) {
+        this.quantity = quantity;
     }
-    public void setNameTrader(StringProperty textProperty) {
-        this.nameTrader = textProperty;
-    }
-    public synchronized void buy(int quantity, String nameTrader) {
-        this.setContentNameTrader(nameTrader);
-        if (this.quantity < quantity) {
-            System.out.println("Not enough stocks available for purchase, " + nameTrader + " can not execute this transaction");
+
+    public synchronized void buy(BuyRequest request) {
+        handlingRequest = request;
+        if (this.quantity < request.getQuantity()) {
+            System.out.println("Not enough stocks available for purchase, " + request.getNameTrader() + " can not execute this transaction");
         } else {
             try {
-                Thread.sleep(4000);
+                Thread.sleep(2000);
                 System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted: " + e.getMessage());
             }
-            this.quantity -= quantity;
-            System.out.println(Thread.currentThread().getName() + " bought " + quantity + " stocks successfully");
+            this.quantity -= request.getQuantity();
+            System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
         }
     }
 
-    public synchronized void sell(int quantity, String nameTrader) {
-        this.setContentNameTrader(nameTrader);
+    public synchronized void sell(SellRequest request) {
+        handlingRequest = request;
         try {
-            Thread.sleep(4000);
+            Thread.sleep(2000);
             System.out.println("Transaction time ...");
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted: " + e.getMessage());
         }
-        this.quantity += quantity;
-        System.out.println(Thread.currentThread().getName() + " sold " + quantity + " stocks successfully");
+        this.quantity += request.getQuantity();
+        System.out.println(Thread.currentThread().getName() + " sold " + request.getQuantity() + " stocks successfully");
     }
 }

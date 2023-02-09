@@ -2,16 +2,26 @@ package model;
 
 public class SellerThread extends Thread {
     private StockMonitor stockMonitor;
-    private int quantity;
+    private int sellQuantity;
 
-    public SellerThread(String name, StockMonitor stockMonitor, int quantity) {
+    public SellerThread(String name, StockMonitor stockMonitor, int sellQuantity) {
         super(name);
         this.stockMonitor = stockMonitor;
-        this.quantity = quantity;
+        this.sellQuantity = sellQuantity;
     }
 
     @Override
     public void run() {
-            stockMonitor.sell(quantity, this.getName());
+        while (true) {
+            // TODO: Request to sell stocks
+            SellRequest request = new SellRequest(this.getName(), sellQuantity);
+            stockMonitor.sell(request);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

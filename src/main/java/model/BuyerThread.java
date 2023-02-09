@@ -2,17 +2,26 @@ package model;
 
 public class BuyerThread extends Thread {
     private StockMonitor stockMonitor;
-    private int quantity;
+    private int buyQuantity;
 
-    public BuyerThread(String name, StockMonitor stockMonitor, int quantity) {
+    public BuyerThread(String name, StockMonitor stockMonitor, int buyQuantity) {
         super(name);
         this.stockMonitor = stockMonitor;
-        this.quantity = quantity;
+        this.buyQuantity = buyQuantity;
     }
 
     @Override
     public void run() {
-            stockMonitor.buy(quantity, this.getName());
+        while (true) {
+            // TODO: Request to buy stocks
+            BuyRequest request = new BuyRequest(this.getName(), buyQuantity);
+            stockMonitor.buy(request);
 
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

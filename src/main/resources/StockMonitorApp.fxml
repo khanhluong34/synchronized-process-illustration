@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -20,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MonitorAppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MonitorAppController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -29,11 +21,6 @@
                   <Font size="21.0" />
                </font>
             </Text>
-            <ImageView fitHeight="52.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/1.png" />
-               </image>
-            </ImageView>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Button fx:id="btnStart" mnemonicParsing="false" onAction="#btnStartOnPressed" text="Start Session">
                <HBox.margin>
@@ -49,24 +36,7 @@
    <center>
       <HBox prefHeight="540.0" prefWidth="800.0" spacing="4.0" BorderPane.alignment="CENTER">
          <children>
-            <TitledPane collapsible="false" prefHeight="540.0" prefWidth="260.0" text="Transaction history">
-               <content>
-                  <TableView maxWidth="300.0" prefHeight="359.0" prefWidth="300.0">
-                    <columns>
-                      <TableColumn prefWidth="49.0" text="Index" />
-                      <TableColumn editable="false" prefWidth="94.5" sortable="false" text="Client" />
-                        <TableColumn editable="false" prefWidth="154.5" sortable="false" text="Quantity" />
-                    </columns>
-                  </TableView>
-               </content>
-               <graphic>
-                  <ImageView fitHeight="39.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/2.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </TitledPane>
+            <TitledPane fx:id="transHistoryPane" collapsible="false" prefHeight="540.0" prefWidth="260.0" text="Transaction history" />
             <VBox prefHeight="500.0" prefWidth="290.0">
                <children>
                   <TitledPane animated="false" collapsible="false" prefHeight="250.0" prefWidth="300.0" text="Monitor">
@@ -107,32 +77,8 @@
                      <VBox.margin>
                         <Insets bottom="4.0" />
                      </VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@Images/5.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
                   </TitledPane>
-                  <TitledPane collapsible="false" prefHeight="290.0" prefWidth="273.0" text="Transaction queue">
-                     <content>
-                        <TableView prefHeight="359.0" prefWidth="300.0">
-                           <columns>
-                              <TableColumn prefWidth="49.0" text="Index" />
-                              <TableColumn editable="false" prefWidth="103.0" sortable="false" text="Client" />
-                              <TableColumn editable="false" prefWidth="146.0" sortable="false" text="Quantity" />
-                           </columns>
-                        </TableView>
-                     </content>
-                     <graphic>
-                        <ImageView fitHeight="28.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@Images/4.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </TitledPane>
+                  <TitledPane fx:id="transQueuePane" collapsible="false" prefHeight="290.0" prefWidth="273.0" text="Transaction queue" />
                </children>
             </VBox>
             <VBox prefHeight="500.0" prefWidth="230.0">
@@ -174,28 +120,14 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Buyer">
-                                       <graphic>
-                                          <ImageView fitHeight="33.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@Images/6.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic></Label>
+                                    <Label text="Buyer" />
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                                     <Text fx:id="textBuy" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label prefHeight="28.0" prefWidth="67.0" text="Seller">
-                                       <graphic>
-                                          <ImageView fitHeight="38.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@Images/7.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic></Label>
+                                    <Label prefHeight="28.0" prefWidth="67.0" text="Seller" />
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                                     <Text fx:id="textSell" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
@@ -203,13 +135,6 @@
                            </children>
                         </VBox>
                      </content>
-                     <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="111.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@Images/3.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
                   </TitledPane>
                </children>
             </VBox>
