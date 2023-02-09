@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.BuyRequest;
 import model.TradeRequest;
 
 import java.net.URL;
@@ -34,16 +33,6 @@ public class TransTableController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colClient.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("nameTrader"));
         colQty.setCellValueFactory(new PropertyValueFactory<TradeRequest, Integer>("quantity"));
-
-        // colType is 'Buy' if tradeRequest is an instance of BuyRequest, 'Sell' otherwise
-        colType.setCellValueFactory(cellData -> {
-            StringProperty property = new SimpleStringProperty();
-            if (cellData.getValue() instanceof BuyRequest) {
-                property.setValue("Buy");
-            } else {
-                property.setValue("Sell");
-            }
-            return property;
-        });
+        colType.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("type"));
     }
 }
