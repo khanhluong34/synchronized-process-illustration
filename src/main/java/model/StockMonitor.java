@@ -34,7 +34,9 @@ public class StockMonitor {
                 System.out.print(e.getMessage());
             }
         } else {
-            this.queuedRequest.remove(request);
+            if (this.queuedRequest.contains(request)) {
+                this.queuedRequest.remove(request);
+            }
             try {
                 Thread.sleep(2000);
                 System.out.println("Transaction time ...");
@@ -59,7 +61,9 @@ public class StockMonitor {
                 System.out.println(e.getMessage());
             }
         } else {
-            queuedRequest.remove(request);
+            if (this.queuedRequest.contains(request)) {
+                queuedRequest.remove(request);
+            }
             try {
                 Thread.sleep(2000);
                 System.out.println("Transaction time ...");
