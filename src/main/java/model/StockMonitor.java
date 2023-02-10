@@ -5,11 +5,9 @@ import java.util.LinkedList;
 public class StockMonitor {
     private int quantity;
     private int maxQuantity = 100;
-    private int lock = 1;
     private TradeRequest handlingRequest;
 
     private LinkedList<TradeRequest> queuedRequest;
-    private LinkedList<String> nameQueuedRequest;
 
     public int getQuantity() {
         return quantity;
@@ -22,7 +20,6 @@ public class StockMonitor {
     public StockMonitor(int quantity) {
         this.quantity = quantity;
         this.queuedRequest = new LinkedList<TradeRequest>();
-        this.nameQueuedRequest = new LinkedList<String>();
     }
     public String currentRequest() {
         String requests = "";
@@ -37,18 +34,16 @@ public class StockMonitor {
             System.out.println("Not enough stocks available for purchase, " + request.getNameTrader() + " can not execute this transaction");
             try {
                 // wait until enough stock quantity for purchase
-                if (! this.nameQueuedRequest.contains(request.getNameTrader())) {
+                if (! this.queuedRequest.contains(request)) {
                     this.queuedRequest.add(request);
-                    this.nameQueuedRequest.add(request.getNameTrader());
                 }
                 wait();
             } catch (InterruptedException e) {
                 System.out.print(e.getMessage());
             }
         } else {
-            if (this.nameQueuedRequest.contains(request.getNameTrader())) {
-                this.queuedRequest.remove(this.nameQueuedRequest.indexOf(request.getNameTrader()));
-                this.nameQueuedRequest.remove(request.getNameTrader());
+            if (this.queuedRequest.contains(request)) {
+                this.queuedRequest.remove(request);
             }
             if (this.queuedRequest.size() > 0) {
                 System.out.println("Waiting set: " + currentRequest());
@@ -71,8 +66,7 @@ public class StockMonitor {
         if (this.maxQuantity - this.quantity < request.getQuantity()) {
             System.out.println("System holds enough stock quantity, preventing selling stock to protect the stock price, stop " + Thread.currentThread().getName());
             try {
-                if (! this.nameQueuedRequest.contains(request.getNameTrader())) {
-                    this.nameQueuedRequest.add(request.getNameTrader());
+                if (! this.queuedRequest.contains(request)) {
                     this.queuedRequest.add(request);
                 }
                 wait();
@@ -80,9 +74,8 @@ public class StockMonitor {
                 System.out.println(e.getMessage());
             }
         } else {
-            if (this.nameQueuedRequest.contains(request.getNameTrader())) {
-                this.queuedRequest.remove(this.nameQueuedRequest.indexOf(request.getNameTrader()));
-                this.nameQueuedRequest.remove(request.getNameTrader());
+            if (this.queuedRequest.contains(request)) {
+                this.queuedRequest.remove(request);
             }
             if (this.queuedRequest.size() > 0) {
                 System.out.println("Waiting set: " + currentRequest());
