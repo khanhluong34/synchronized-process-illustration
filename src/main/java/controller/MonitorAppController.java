@@ -28,6 +28,7 @@ public class MonitorAppController implements Initializable {
     private Button btnAbout;
     @FXML
     private Button btnStart;
+
     @FXML
     private Text textBuy;
     @FXML
@@ -36,12 +37,18 @@ public class MonitorAppController implements Initializable {
     private Text textSell;
     @FXML
     private Text textTrader;
+
     @FXML
-    private Slider speedSlider;
+    private Slider latencySlider;
     @FXML
     private Slider numberOfBuyers;
     @FXML
     private Slider numberOfSellers;
+    @FXML
+    private Slider initQtySlider;
+    @FXML
+    private Slider maxQtySlider;
+
     @FXML
     private TableView<TradeRequest> tableHistory;
     @FXML
@@ -80,8 +87,13 @@ public class MonitorAppController implements Initializable {
             btnStart.setText("Stop Session");
             int noBuyers = (int) numberOfBuyers.getValue();
             int noSellers = (int) numberOfSellers.getValue();
-            int speed = (int) speedSlider.getValue();
-            StockMonitor monitor = new StockMonitor(200);
+            int latency = (int) latencySlider.getValue();
+            int initQty = (int) initQtySlider.getValue();
+            int maxQty = (int) maxQtySlider.getValue();
+
+            //
+
+            StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
             task = new TradingTask(monitor, noBuyers, noSellers);
             Thread thread = new Thread(task);
             thread.start();
@@ -161,8 +173,9 @@ public class MonitorAppController implements Initializable {
                     // Update the value of quantity
                     textQty.setText(String.valueOf(monitor.getQuantity()));
 
-                    // Update the value of trader
-                    textTrader.setText(monitor.getHandlingRequest().getNameTrader());
+                    if (monitor.getHandlingRequest() != null) {
+                        textTrader.setText(monitor.getHandlingRequest().getNameTrader());
+                    }
 
                     // Update the table of queue
                     tableQueue.setItems(monitor.getQueuedRequest());

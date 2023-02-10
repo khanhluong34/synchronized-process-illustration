@@ -8,8 +8,9 @@ import java.util.LinkedList;
 
 public class StockMonitor {
     private int quantity;
-    private int maxQuantity = 100;
-    private TradeRequest handlingRequest;
+    private int maxQuantity;
+    private int latency;
+    private TradeRequest handlingRequest = null;
     private ObservableList<TradeRequest> queuedRequest;
 
     public int getQuantity() {
@@ -24,8 +25,10 @@ public class StockMonitor {
         return queuedRequest;
     }
 
-    public StockMonitor(int quantity) {
+    public StockMonitor(int quantity, int maxQuantity, int latency) {
         this.quantity = quantity;
+        this.maxQuantity = maxQuantity;
+        this.latency = latency;
         this.queuedRequest = FXCollections.observableArrayList();
     }
     public String currentRequest() {
@@ -54,7 +57,7 @@ public class StockMonitor {
                 System.out.println("Waiting set: " + currentRequest());
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(latency);
                 System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted: " + e.getMessage());
@@ -85,7 +88,7 @@ public class StockMonitor {
                 System.out.println("Waiting set: " + currentRequest());
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(latency);
                 System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted: " + e.getMessage());

@@ -68,16 +68,22 @@
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="FLC - HOSE">
                                  <font>
-                                    <Font size="15.0" />
+                                    <Font size="18.0" />
                                  </font>
                               </Text>
                               <VBox>
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="269.0">
                                        <children>
-                                          <Label text="Quantity" />
+                                          <Label text="Quantity">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></Label>
                                           <Region prefHeight="40.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                                          <Text fx:id="textQty" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+                                          <Text fx:id="textQty" strokeType="OUTSIDE" strokeWidth="0.0" text="...">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></Text>
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="40.0" prefWidth="269.0" style="-fx-background-color: #bbbb;">
@@ -89,9 +95,15 @@
                               </VBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Trader" />
+                                    <Label text="Trader">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></Label>
                                     <Region prefHeight="79.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                                    <Text fx:id="textTrader" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+                                    <Text fx:id="textTrader" strokeType="OUTSIDE" strokeWidth="0.0" text="...">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></Text>
                                  </children>
                               </HBox>
                            </children>
@@ -129,23 +141,37 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Trading Speed" />
+                                    <Label text="Trading latency" />
                                     <Region prefHeight="100.0" prefWidth="11.0" HBox.hgrow="ALWAYS" />
-                                    <Slider fx:id="speedSlider" blockIncrement="500.0" majorTickUnit="500.0" max="1500.0" min="1000.0" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1000.0" />
+                                    <Slider fx:id="latencySlider" blockIncrement="250.0" majorTickUnit="250.0" max="1500.0" min="1000.0" minorTickCount="1" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1000.0" />
                                  </children>
                               </HBox>
                               <HBox layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label text="No. buyers" />
                                     <Region prefHeight="100.0" prefWidth="11.0" HBox.hgrow="ALWAYS" />
-                                    <Slider fx:id="numberOfBuyers" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                    <Slider fx:id="numberOfBuyers" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
                                  </children>
                               </HBox>
                               <HBox layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label text="No. sellers" />
                                     <Region prefHeight="100.0" prefWidth="11.0" HBox.hgrow="ALWAYS" />
-                                    <Slider fx:id="numberOfSellers" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                    <Slider fx:id="numberOfSellers" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Initial quantity" />
+                                    <Region prefHeight="100.0" prefWidth="11.0" HBox.hgrow="ALWAYS" />
+                                    <Slider fx:id="initQtySlider" blockIncrement="100.0" majorTickUnit="200.0" max="500.0" min="100.0" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="100.0" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="20.0" layoutY="132.0" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Max quantity" />
+                                    <Region prefHeight="100.0" prefWidth="11.0" HBox.hgrow="ALWAYS" />
+                                    <Slider fx:id="maxQtySlider" blockIncrement="200.0" majorTickUnit="200.0" max="1000.0" min="200.0" minorTickCount="2" prefHeight="17.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="200.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -160,14 +186,20 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Buyer" />
+                                    <Label text="Buyer">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></Label>
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                                     <Text fx:id="textBuy" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label prefHeight="28.0" prefWidth="67.0" text="Seller" />
+                                    <Label prefHeight="28.0" prefWidth="67.0" text="Seller">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font></Label>
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
                                     <Text fx:id="textSell" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
                                  </children>
