@@ -1,18 +1,24 @@
 package controller;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import model.BuyerThread;
 import model.SellerThread;
 import model.StockMonitor;
+import model.TradeRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,9 +43,25 @@ public class MonitorAppController implements Initializable {
     @FXML
     private Slider numberOfSellers;
     @FXML
-    private TitledPane transHistoryPane;
+    private TableView<TradeRequest> tableHistory;
     @FXML
-    private TitledPane transQueuePane;
+    private TableColumn<TradeRequest, String> colClient;
+    @FXML
+    private TableColumn<TradeRequest, String> colClient1;
+    @FXML
+    private TableColumn<TradeRequest, Integer> colIdx;
+    @FXML
+    private TableColumn<TradeRequest, Integer> colIdx1;
+    @FXML
+    private TableColumn<TradeRequest, Integer> colQty;
+    @FXML
+    private TableColumn<TradeRequest, Integer> colQty1;
+    @FXML
+    private TableColumn<TradeRequest, String> colType;
+    @FXML
+    private TableColumn<TradeRequest, String> colType1;
+    @FXML
+    private TableView<TradeRequest> tableQueue;
 
     private TradingTask task;
 
@@ -72,23 +94,22 @@ public class MonitorAppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        FXMLLoader historyLoader = new FXMLLoader(getClass().getResource("/TransactionTable.fxml"));
-        try {
-            Parent historyRoot = historyLoader.load();
-            transHistoryPane.setContent(historyRoot);
-        } catch (Exception e) {
-            System.out.println("An error occurred while loading the FXML file: " + e);
-            e.printStackTrace();
-        }
+        initializeTable();
+    }
 
-        FXMLLoader queueLoader = new FXMLLoader(getClass().getResource("/TransactionTable.fxml"));
-        try {
-            Parent queueRoot = queueLoader.load();
-            transQueuePane.setContent(queueRoot);
-        } catch (Exception e) {
-            System.out.println("An error occurred while loading the FXML file: " + e);
-            e.printStackTrace();
-        }
+    private void initializeTable() {
+        tableHistory.setPlaceholder(new Label("No transaction history"));
+        tableQueue.setPlaceholder(new Label("No transaction queue"));
+
+        colClient.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("nameTrader"));
+        colClient1.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("nameTrader"));
+
+        colQty.setCellValueFactory(new PropertyValueFactory<TradeRequest, Integer>("quantity"));
+        colQty1.setCellValueFactory(new PropertyValueFactory<TradeRequest, Integer>("quantity"));
+
+        // return string value of TradeRequestType
+        colType.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("type"));
+        colType1.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("type"));
     }
 
     class TradingTask extends Task<Void> {
@@ -139,6 +160,12 @@ public class MonitorAppController implements Initializable {
                 Platform.runLater(() -> {
                     // Update the value of quantity
                     textQty.setText(String.valueOf(monitor.getQuantity()));
+
+                    // Update the value of trader
+                    textTrader.setText(monitor.getHandlingRequest().getNameTrader());
+
+                    // Update the table of queue
+                    tableQueue.setItems(monitor.getQueuedRequest());
 
                 });
                 Thread.sleep(1000);

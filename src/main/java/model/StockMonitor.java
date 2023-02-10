@@ -1,12 +1,16 @@
 package model;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.LinkedList;
 
 public class StockMonitor {
     private int quantity;
     private int maxQuantity = 100;
     private TradeRequest handlingRequest;
-    private LinkedList<TradeRequest> queuedRequest;
+    private ObservableList<TradeRequest> queuedRequest;
 
     public int getQuantity() {
         return quantity;
@@ -16,9 +20,13 @@ public class StockMonitor {
         return handlingRequest;
     }
 
+    public ObservableList<TradeRequest> getQueuedRequest() {
+        return queuedRequest;
+    }
+
     public StockMonitor(int quantity) {
         this.quantity = quantity;
-        this.queuedRequest = new LinkedList<TradeRequest>();
+        this.queuedRequest = FXCollections.observableArrayList();
     }
     public String currentRequest() {
         StringBuilder requests = new StringBuilder();
