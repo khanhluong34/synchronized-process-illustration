@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class TradeRequest {
     private final String nameTrader;
     private final int quantity;
@@ -12,15 +14,10 @@ public class TradeRequest {
     }
     @Override
     public boolean equals(Object o) {
-        if (! (o instanceof  TradeRequest)) {
+        if (! (o instanceof TradeRequest request)) {
             return false;
         } else {
-            TradeRequest request = (TradeRequest) o;
-            if (this.getNameTrader() == request.getNameTrader()) {
-                return true;
-            } else {
-                return false;
-            }
+            return Objects.equals(this.getNameTrader(), request.getNameTrader());
         }
     }
 
@@ -31,7 +28,6 @@ public class TradeRequest {
     public static TradeRequest createSellRequest(String nameTrader, int quantity) {
         return new TradeRequest(nameTrader, quantity, TradeRequestType.SELL);
     }
-
 
     public String getNameTrader() {
         return nameTrader;

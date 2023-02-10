@@ -12,16 +12,10 @@ public class BuyerThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (!Thread.interrupted()) {
             // TODO: Request to buy stocks
             TradeRequest request = TradeRequest.createBuyRequest(this.getName(), buyQuantity);
             stockMonitor.buy(request);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 }

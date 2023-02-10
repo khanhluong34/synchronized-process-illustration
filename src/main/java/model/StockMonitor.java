@@ -6,7 +6,6 @@ public class StockMonitor {
     private int quantity;
     private int maxQuantity = 100;
     private TradeRequest handlingRequest;
-
     private LinkedList<TradeRequest> queuedRequest;
 
     public int getQuantity() {
@@ -22,11 +21,11 @@ public class StockMonitor {
         this.queuedRequest = new LinkedList<TradeRequest>();
     }
     public String currentRequest() {
-        String requests = "";
-        for(int i = 0; i < queuedRequest.size(); i++) {
-            requests += " " + queuedRequest.get(i).getNameTrader();
+        StringBuilder requests = new StringBuilder();
+        for (TradeRequest tradeRequest : queuedRequest) {
+            requests.append(" ").append(tradeRequest.getNameTrader());
         }
-        return requests;
+        return requests.toString();
     }
     public synchronized void buy(TradeRequest request) {
         handlingRequest = request;
@@ -42,9 +41,7 @@ public class StockMonitor {
                 System.out.print(e.getMessage());
             }
         } else {
-            if (this.queuedRequest.contains(request)) {
-                this.queuedRequest.remove(request);
-            }
+            this.queuedRequest.remove(request);
             if (this.queuedRequest.size() > 0) {
                 System.out.println("Waiting set: " + currentRequest());
             }
@@ -53,12 +50,13 @@ public class StockMonitor {
                 System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted: " + e.getMessage());
+                Thread.currentThread().interrupt();
             }
             this.quantity -= request.getQuantity();
             System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
             // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
             notify();
-            }
+        }
     }
 
     public synchronized void sell(TradeRequest request) {
@@ -74,9 +72,7 @@ public class StockMonitor {
                 System.out.println(e.getMessage());
             }
         } else {
-            if (this.queuedRequest.contains(request)) {
-                this.queuedRequest.remove(request);
-            }
+            this.queuedRequest.remove(request);
             if (this.queuedRequest.size() > 0) {
                 System.out.println("Waiting set: " + currentRequest());
             }
@@ -85,6 +81,7 @@ public class StockMonitor {
                 System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
                 System.out.println("Thread interrupted: " + e.getMessage());
+                Thread.currentThread().interrupt();
             }
             this.quantity += request.getQuantity();
             System.out.println(Thread.currentThread().getName() + " sold " + request.getQuantity() + " stocks successfully");
