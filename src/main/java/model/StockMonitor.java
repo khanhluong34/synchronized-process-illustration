@@ -20,6 +20,7 @@ public class StockMonitor {
 
     public StockMonitor(int quantity) {
         this.quantity = quantity;
+        this.queuedRequest = new LinkedList<TradeRequest>();
     }
 
     public synchronized void buy(TradeRequest request) {
