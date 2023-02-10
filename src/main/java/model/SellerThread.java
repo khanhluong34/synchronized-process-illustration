@@ -14,7 +14,7 @@ public class SellerThread extends Thread {
     public void run() {
         while (true) {
             // TODO: Request to sell stocks
-            TradeRequest request = TradeRequest.createBuyRequest(this.getName(), sellQuantity);
+            TradeRequest request = TradeRequest.createSellRequest(this.getName(), sellQuantity);
             stockMonitor.sell(request);
 
             try {
