@@ -25,6 +25,8 @@ import java.util.ResourceBundle;
 
 public class MonitorAppController implements Initializable {
     @FXML
+    private Text notification;
+    @FXML
     private Button btnAbout;
     @FXML
     private Button btnStart;
@@ -175,7 +177,7 @@ public class MonitorAppController implements Initializable {
                 Platform.runLater(() -> {
                     // Update the value of quantity
                     textQty.setText(String.valueOf(monitor.getQuantity()));
-
+                    notification.setText(String.valueOf(monitor.getNotification()));
                     if (monitor.getHandlingRequest() != null) {
                         textTrader.setText(monitor.getHandlingRequest().getNameTrader());
                     }
