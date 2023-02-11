@@ -12,6 +12,7 @@ public class StockMonitor {
     private int latency;
     private TradeRequest handlingRequest = null;
     private ObservableList<TradeRequest> queuedRequest;
+    private ObservableList<TradeRequest> transactionHistory;
 
     public int getQuantity() {
         return quantity;
@@ -24,12 +25,14 @@ public class StockMonitor {
     public ObservableList<TradeRequest> getQueuedRequest() {
         return queuedRequest;
     }
+    public ObservableList<TradeRequest> getTransactionHistory() {return transactionHistory;};
 
     public StockMonitor(int quantity, int maxQuantity, int latency) {
         this.quantity = quantity;
         this.maxQuantity = maxQuantity;
         this.latency = latency;
         this.queuedRequest = FXCollections.observableArrayList();
+        this.transactionHistory = FXCollections.observableArrayList();
     }
     public String currentRequest() {
         StringBuilder requests = new StringBuilder();
@@ -38,6 +41,12 @@ public class StockMonitor {
         }
         return requests.toString();
     }
+    // when remove a request from queue, we need to reindex the remains.
+    public void reindexing() {
+        for (int i = 0; i < this.queuedRequest.size(); i ++) {
+            this.queuedRequest.get(i).setIndex(i + 1);
+        }
+    }
     public synchronized void buy(TradeRequest request) {
         handlingRequest = request;
         if (this.quantity < request.getQuantity()) {
@@ -45,6 +54,7 @@ public class StockMonitor {
             try {
                 // wait until enough stock quantity for purchase
                 if (! this.queuedRequest.contains(request)) {
+                    request.setIndex(queuedRequest.size() + 1);
                     this.queuedRequest.add(request);
                 }
                 wait();
@@ -53,6 +63,7 @@ public class StockMonitor {
             }
         } else {
             this.queuedRequest.remove(request);
+            this.reindexing();
             if (this.queuedRequest.size() > 0) {
                 System.out.println("Waiting set: " + currentRequest());
             }
@@ -64,6 +75,9 @@ public class StockMonitor {
                 Thread.currentThread().interrupt();
             }
             this.quantity -= request.getQuantity();
+            // the transaction is success, add the request into transaction history
+            request.setIndex(transactionHistory.size() + 1);
+            this.transactionHistory.add(request);
             System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
             // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
             notify();
@@ -76,6 +90,7 @@ public class StockMonitor {
             System.out.println("System holds enough stock quantity, preventing selling stock to protect the stock price, stop " + Thread.currentThread().getName());
             try {
                 if (! this.queuedRequest.contains(request)) {
+                    request.setIndex(this.queuedRequest.size() + 1);
                     this.queuedRequest.add(request);
                 }
                 wait();
@@ -84,6 +99,7 @@ public class StockMonitor {
             }
         } else {
             this.queuedRequest.remove(request);
+            this.reindexing();
             if (this.queuedRequest.size() > 0) {
                 System.out.println("Waiting set: " + currentRequest());
             }
@@ -95,6 +111,9 @@ public class StockMonitor {
                 Thread.currentThread().interrupt();
             }
             this.quantity += request.getQuantity();
+            // the transaction is success, add the request into the transaction history
+            request.setIndex(transactionHistory.size() + 1);
+            this.transactionHistory.add(request);
             System.out.println(Thread.currentThread().getName() + " sold " + request.getQuantity() + " stocks successfully");
             // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
             notify();

@@ -113,6 +113,9 @@ public class MonitorAppController implements Initializable {
         tableHistory.setPlaceholder(new Label("No transaction history"));
         tableQueue.setPlaceholder(new Label("No transaction queue"));
 
+        colIdx.setCellValueFactory(new PropertyValueFactory<TradeRequest, Integer>("index"));
+        colIdx1.setCellValueFactory(new PropertyValueFactory<TradeRequest, Integer>("index"));
+
         colClient.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("nameTrader"));
         colClient1.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("nameTrader"));
 
@@ -179,6 +182,8 @@ public class MonitorAppController implements Initializable {
 
                     // Update the table of queue
                     tableQueue.setItems(monitor.getQueuedRequest());
+                    // Update the table of transaction history
+                    tableHistory.setItems(monitor.getTransactionHistory());
 
                 });
                 Thread.sleep(1000);
