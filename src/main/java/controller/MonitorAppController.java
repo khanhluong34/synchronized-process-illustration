@@ -12,6 +12,8 @@ import model.BuyerThread;
 import model.SellerThread;
 import model.StockMonitor;
 import model.TradeRequest;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -75,36 +77,43 @@ public class MonitorAppController implements Initializable {
         alert.setContentText("This display the case of Stock Trading ");
         alert.showAndWait();
     }
-    void checkQuantityCondition(int initQty, int maxQty){
+    boolean checkQuantityCondition(int initQty, int maxQty){
         if (initQty > maxQty) {
-            this.maxQtySlider.setValue(initQty);
-
+            return false;
         }
+        return true;
     }
-
+    void raiseAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Reset the settings");
+        alert.setHeaderText("Invalid configuration");
+        alert.setContentText("The initial quantity must not exceed the maximum quantity");
+        alert.showAndWait();
+    }
     @FXML
     void btnStartOnPressed(ActionEvent event) {
-        if (btnStart.getText().equals("Start Session") && task == null) {
-            btnStart.setText("Stop Session");
-            int noBuyers = (int) numberOfBuyers.getValue();
-            int noSellers = (int) numberOfSellers.getValue();
-            int latency = (int) latencySlider.getValue();
-            checkQuantityCondition( (int) initQtySlider.getValue(), (int) maxQtySlider.getValue());
-            int initQty = (int) initQtySlider.getValue();
-            int maxQty = (int) maxQtySlider.getValue();
-            System.out.println("init, max: " + initQtySlider.getValue() +  ", " + maxQtySlider.getValue());
+        if (checkQuantityCondition((int) initQtySlider.getValue(), (int) maxQtySlider.getValue())) {
+            if (btnStart.getText().equals("Start Session") && task == null) {
+                btnStart.setText("Stop Session");
+                int noBuyers = (int) numberOfBuyers.getValue();
+                int noSellers = (int) numberOfSellers.getValue();
+                int latency = (int) latencySlider.getValue();
+                int initQty = (int) initQtySlider.getValue();
+                int maxQty = (int) maxQtySlider.getValue();
 
-            //
-
-            StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
-            task = new TradingTask(monitor, noBuyers, noSellers);
-            Thread thread = new Thread(task);
-            thread.start();
+                StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
+                task = new TradingTask(monitor, noBuyers, noSellers);
+                Thread thread = new Thread(task);
+                thread.start();
+            } else {
+                task.cancel();
+                task = null;
+                btnStart.setText("Start Session");
+            }
         } else {
-            task.cancel();
-            task = null;
-            btnStart.setText("Start Session");
+            raiseAlert();
         }
+
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
