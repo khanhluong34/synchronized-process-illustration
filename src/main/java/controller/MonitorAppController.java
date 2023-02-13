@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MonitorAppController implements Initializable {
+    private static MonitorAppController controller;
     @FXML
     private Text notification;
     @FXML
@@ -70,6 +71,18 @@ public class MonitorAppController implements Initializable {
     private TableView<TradeRequest> tableQueue;
 
     private TradingTask task;
+    public void stopTask() {
+        task.cancelled();
+    }
+    public MonitorAppController() {
+        this.controller = this;
+    }
+    public static MonitorAppController getController() {
+        if (controller == null) {
+            controller = new MonitorAppController();
+        }
+        return controller;
+    }
 
     @FXML
     void btnAboutOnPressed(ActionEvent event) {

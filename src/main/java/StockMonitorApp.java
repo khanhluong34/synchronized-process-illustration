@@ -1,8 +1,11 @@
+import controller.MonitorAppController;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
+import javafx.stage.WindowEvent;
 
 public class StockMonitorApp extends Application {
     @Override
@@ -14,7 +17,12 @@ public class StockMonitorApp extends Application {
             String css = this.getClass().getResource("style.css").toExternalForm();
             scene.getStylesheets().add(css);
             primaryStage.setScene(scene);
-
+            MonitorAppController controller = MonitorAppController.getController();
+            primaryStage.setOnCloseRequest(event -> {
+                // Custom code to handle the close request
+                controller.stopTask();
+                System.exit(0);
+            });
             primaryStage.show();
         } catch (Exception e) {
             System.out.println("An error occurred while loading the FXML file: " + e);
