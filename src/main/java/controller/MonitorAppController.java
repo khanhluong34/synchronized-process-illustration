@@ -1,19 +1,12 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import model.BuyerThread;
 import model.SellerThread;
@@ -105,7 +98,6 @@ public class MonitorAppController implements Initializable {
             btnStart.setText("Start Session");
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeTable();
@@ -177,7 +169,17 @@ public class MonitorAppController implements Initializable {
                 Platform.runLater(() -> {
                     // Update the value of quantity
                     textQty.setText(String.valueOf(monitor.getQuantity()));
+                    // Update the content of notification
                     notification.setText(String.valueOf(monitor.getNotification()));
+                    // Update the content of client
+                    if (monitor.getDeltaQty().startsWith("+")) {
+                        textBuy.setText(monitor.getDeltaQty());
+                        textSell.setText("");
+                    }
+                    if (monitor.getDeltaQty().startsWith(("-"))) {
+                        textSell.setText(monitor.getDeltaQty());
+                        textBuy.setText("");
+                    }
                     if (monitor.getHandlingRequest() != null) {
                         textTrader.setText(monitor.getHandlingRequest().getNameTrader());
                     }
