@@ -75,6 +75,12 @@ public class MonitorAppController implements Initializable {
         alert.setContentText("This display the case of Stock Trading ");
         alert.showAndWait();
     }
+    void checkQuantityCondition(int initQty, int maxQty){
+        if (initQty > maxQty) {
+            this.maxQtySlider.setValue(initQty);
+
+        }
+    }
 
     @FXML
     void btnStartOnPressed(ActionEvent event) {
@@ -83,8 +89,10 @@ public class MonitorAppController implements Initializable {
             int noBuyers = (int) numberOfBuyers.getValue();
             int noSellers = (int) numberOfSellers.getValue();
             int latency = (int) latencySlider.getValue();
+            checkQuantityCondition( (int) initQtySlider.getValue(), (int) maxQtySlider.getValue());
             int initQty = (int) initQtySlider.getValue();
             int maxQty = (int) maxQtySlider.getValue();
+            System.out.println("init, max: " + initQtySlider.getValue() +  ", " + maxQtySlider.getValue());
 
             //
 
@@ -145,7 +153,20 @@ public class MonitorAppController implements Initializable {
                 seller.start();
             }
         }
-
+        private String getBuyersNameString() {
+            String s = "";
+            for (BuyerThread buyer: this.buyers) {
+                s += buyer.getName() + "\n";
+            }
+            return s;
+        }
+        private String getSellersNameString() {
+            String s = "";
+            for (SellerThread seller: this.sellers) {
+                s += seller.getName() + "\n";
+            }
+            return s;
+        }
         private void initializeClient() {
             System.out.println("\n");
             this.buyers = new BuyerThread[noBuyers];
@@ -167,22 +188,17 @@ public class MonitorAppController implements Initializable {
             startTrading();
             while (!isCancelled()) {
                 Platform.runLater(() -> {
+                    checkQuantityCondition((int) initQtySlider.getValue(), (int) maxQtySlider.getValue());
                     // Update the value of quantity
                     textQty.setText(String.valueOf(monitor.getQuantity()));
                     // Update the content of notification
                     notification.setText(String.valueOf(monitor.getNotification()));
-                    // Update the content of client
-                    if (monitor.getDeltaQty().startsWith("+")) {
-                        textBuy.setText(monitor.getDeltaQty());
-                        textSell.setText("");
-                    }
-                    if (monitor.getDeltaQty().startsWith(("-"))) {
-                        textSell.setText(monitor.getDeltaQty());
-                        textBuy.setText("");
-                    }
                     if (monitor.getHandlingRequest() != null) {
                         textTrader.setText(monitor.getHandlingRequest().getNameTrader());
                     }
+                    // Update the content of the client
+                    textSell.setText(getSellersNameString());
+                    textBuy.setText(getBuyersNameString());
 
                     // Update the table of queue
                     tableQueue.setItems(monitor.getQueuedRequest());
