@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.concurrent.Task;
 import model.BuyerThread;
@@ -70,10 +72,12 @@ public class MonitorAppController implements Initializable {
     @FXML
     void btnAboutOnPressed(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About");
-        alert.setHeaderText("This is an example of the case of Process synchronization using Monitor ");
-        alert.setContentText("This display the case of Stock Trading ");
+        alert.setTitle("About The App");
+        //alert.setHeaderText("This is an example of the case of Process synchronization using Monitor.This display the case of Stock Trading Monitor ");
+        alert.setHeaderText("This is an example of the case of Process synchronization using Monitor.This display the case of Stock Trading Monitor ");
+
         alert.showAndWait();
+
     }
     void checkQuantityCondition(int initQty, int maxQty){
         if (initQty > maxQty) {
