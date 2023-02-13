@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -196,7 +197,10 @@
                                           <Font size="14.0" />
                                        </font></Label>
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
-                                    <Text fx:id="textBuy" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+                                    <Text fx:id="textBuy" strokeType="OUTSIDE" strokeWidth="0.0" text="...">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font></Text>
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
@@ -206,7 +210,10 @@
                                           <Font size="14.0" />
                                        </font></Label>
                                     <Region prefHeight="100.0" prefWidth="107.0" HBox.hgrow="ALWAYS" />
-                                    <Text fx:id="textSell" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+                                    <Text fx:id="textSell" strokeType="OUTSIDE" strokeWidth="0.0" text="...">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font></Text>
                                  </children>
                               </HBox>
                            </children>

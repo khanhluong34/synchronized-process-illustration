@@ -1,14 +1,12 @@
 package model;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.LinkedList;
 
 public class StockMonitor {
     private String notification = "System works normally";
     private int quantity;
+    private String deltaQty = "No change";
     private int maxQuantity;
     private int latency;
     private TradeRequest handlingRequest = null;
@@ -34,6 +32,9 @@ public class StockMonitor {
         this.latency = latency;
         this.queuedRequest = FXCollections.observableArrayList();
         this.transactionHistory = FXCollections.observableArrayList();
+    }
+    public String getDeltaQty() {
+        return deltaQty;
     }
     public String getNotification() {return this.notification;}
     public String currentRequest() {
@@ -79,6 +80,8 @@ public class StockMonitor {
                 Thread.currentThread().interrupt();
             }
             this.quantity -= request.getQuantity();
+            // update delta quantity
+            this.deltaQty = "+ " + request.getQuantity();
             // the transaction is success, add the request into transaction history
             request.setIndex(transactionHistory.size() + 1);
             this.transactionHistory.add(request);
@@ -119,6 +122,8 @@ public class StockMonitor {
                 Thread.currentThread().interrupt();
             }
             this.quantity += request.getQuantity();
+            // update the delta quantity
+            this.deltaQty = "- " + request.getQuantity();
             // the transaction is success, add the request into the transaction history
             request.setIndex(transactionHistory.size() + 1);
             this.transactionHistory.add(request);
