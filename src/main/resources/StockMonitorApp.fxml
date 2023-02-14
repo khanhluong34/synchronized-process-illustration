@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -21,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MonitorAppController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MonitorAppController">
    <top>
       <HBox alignment="CENTER_LEFT" maxHeight="60.0" maxWidth="800.0" minHeight="60.0" minWidth="800.0" prefHeight="60.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -68,9 +62,9 @@
                </content></TitledPane>
             <VBox prefHeight="500.0" prefWidth="290.0">
                <children>
-                  <TitledPane animated="false" collapsible="false" maxHeight="250.0" prefHeight="250.0" prefWidth="300.0" text="Monitor">
+                  <TitledPane animated="false" collapsible="false" maxHeight="250.0" prefHeight="250.0" prefWidth="300.0" stylesheets="@monitor.css" text="Monitor">
                      <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: PINK;">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="FLC - HOSE">
                                  <font>
@@ -92,11 +86,6 @@
                                              </font></Text>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="269.0" style="-fx-background-color: #bbbb;">
-                                       <children>
-                                          <Text fx:id="notification" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                                       </children>
-                                    </HBox>
                                  </children>
                               </VBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
@@ -111,6 +100,18 @@
                                           <Font size="14.0" />
                                        </font></Text>
                                  </children>
+                              </HBox>
+                              <HBox fx:id="boxNotification" alignment="CENTER" maxWidth="261.0" prefHeight="56.0" prefWidth="261.0" style="-fx-background-color: #bbbb;">
+                                 <children>
+                                    <Text fx:id="notification" strokeType="OUTSIDE" strokeWidth="0.0" text="System status">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>

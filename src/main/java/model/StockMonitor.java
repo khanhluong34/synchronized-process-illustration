@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class StockMonitor {
-    private String notification = "System works normally";
+    private MonitorStatusType status = MonitorStatusType.NORMAL;
     private int quantity;
     private int maxQuantity;
     private int latency;
@@ -32,7 +32,7 @@ public class StockMonitor {
         this.queuedRequest = FXCollections.observableArrayList();
         this.transactionHistory = FXCollections.observableArrayList();
     }
-    public String getNotification() {return this.notification;}
+    public MonitorStatusType getStatus() {return this.status;}
     public String currentRequest() {
         StringBuilder requests = new StringBuilder();
         for (TradeRequest tradeRequest : queuedRequest) {
@@ -49,8 +49,8 @@ public class StockMonitor {
     public synchronized void buy(TradeRequest request) {
         handlingRequest = request;
         if (this.quantity < request.getQuantity()) {
-            // set the notification
-            this.notification = "Not enough stocks available for purchase";
+            // set the status
+            this.status = MonitorStatusType.NOT_ENOUGH;
             System.out.println("Not enough stocks available for purchase, " + request.getNameTrader() + " can not execute this transaction");
             try {
                 // wait until enough stock quantity for purchase
@@ -79,8 +79,8 @@ public class StockMonitor {
             // the transaction is success, add the request into transaction history
             request.setIndex(transactionHistory.size() + 1);
             this.transactionHistory.add(request);
-            // the transaction is success, then change the content of notification
-            this.notification = "System works normally";
+            // the transaction is success, then change the content of status
+            this.status = MonitorStatusType.NORMAL;
             System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
             // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
             notify();
@@ -90,8 +90,8 @@ public class StockMonitor {
     public synchronized void sell(TradeRequest request) {
         this.handlingRequest = request;
         if (this.maxQuantity - this.quantity < request.getQuantity()) {
-            // set the notification
-            this.notification = "System holds enough stock, preventing selling";
+            // set the status
+            this.status = MonitorStatusType.FULL;
             System.out.println("System holds enough stock quantity, preventing selling stock to protect the stock price, stop " + Thread.currentThread().getName());
             try {
                 if (! this.queuedRequest.contains(request)) {
@@ -119,8 +119,8 @@ public class StockMonitor {
             // the transaction is success, add the request into the transaction history
             request.setIndex(transactionHistory.size() + 1);
             this.transactionHistory.add(request);
-            // the transaction is success, then change the content of notification
-            this.notification = "System works normally";
+            // the transaction is success, then change the content of status
+            this.status = MonitorStatusType.NORMAL;
             System.out.println(Thread.currentThread().getName() + " sold " + request.getQuantity() + " stocks successfully");
             // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
             notify();

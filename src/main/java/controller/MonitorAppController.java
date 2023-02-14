@@ -6,9 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
 import javafx.concurrent.Task;
 import model.BuyerThread;
 import model.SellerThread;
@@ -22,6 +21,9 @@ import java.util.ResourceBundle;
 
 public class MonitorAppController implements Initializable {
     private static MonitorAppController controller;
+
+    @FXML
+    private HBox boxNotification;
     @FXML
     private Text notification;
     @FXML
@@ -71,9 +73,13 @@ public class MonitorAppController implements Initializable {
     private TableView<TradeRequest> tableQueue;
 
     private TradingTask task;
+
     public void stopTask() {
-        task.cancelled();
+        if (task != null) {
+            task.cancelled();
+        }
     }
+
     public MonitorAppController() {
         this.controller = this;
     }
@@ -87,9 +93,9 @@ public class MonitorAppController implements Initializable {
     @FXML
     void btnAboutOnPressed(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About The App");
-        //alert.setHeaderText("This is an example of the case of Process synchronization using Monitor.This display the case of Stock Trading Monitor ");
-        alert.setHeaderText("This is an example of the case of Process synchronization using Monitor.This display the case of Stock Trading Monitor ");
+        alert.setTitle("About the app");
+        alert.setHeaderText("About the app");
+        alert.setContentText("This is an example of the case of process synchronization using monitor. This display the case of Stock Trading Monitor ");
 
         alert.showAndWait();
 
@@ -118,6 +124,8 @@ public class MonitorAppController implements Initializable {
                 int initQty = (int) initQtySlider.getValue();
                 int maxQty = (int) maxQtySlider.getValue();
 
+                checkQuantityCondition(initQty, maxQty);
+
                 StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
                 task = new TradingTask(monitor, noBuyers, noSellers);
                 Thread thread = new Thread(task);
@@ -126,6 +134,12 @@ public class MonitorAppController implements Initializable {
                 task.cancel();
                 task = null;
                 btnStart.setText("Start Session");
+                textQty.setText("...");
+                textTrader.setText("...");
+                textBuy.setText("...");
+                textSell.setText("...");
+                notification.setText("Session stopped");
+                boxNotification.setStyle("-fx-background-color: #ff5757");
             }
         } else {
             raiseAlert();
@@ -153,6 +167,94 @@ public class MonitorAppController implements Initializable {
         // return string value of TradeRequestType
         colType.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("type"));
         colType1.setCellValueFactory(new PropertyValueFactory<TradeRequest, String>("type"));
+
+        // Change text color of row based on type
+        colType.setCellFactory(column -> {
+            return new TableCell<TradeRequest, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item);
+                        if (item.equals("BUY")) {
+                            setStyle("-fx-text-fill: #157936; -fx-font-weight: bold");
+                        } else {
+                            setStyle("-fx-text-fill: #ff0000; -fx-font-weight: bold");
+                        }
+                    }
+                }
+            };
+        });
+
+        colType1.setCellFactory(column -> {
+            return new TableCell<TradeRequest, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item);
+                        if (item.equals("BUY")) {
+                            setStyle("-fx-text-fill: #157936; -fx-font-weight: bold");
+                        } else {
+                            setStyle("-fx-text-fill: #ff0000; -fx-font-weight: bold");
+                        }
+                    }
+                }
+            };
+        });
+
+        // Change the color of quantity column based on type
+        colQty.setCellFactory(column -> {
+            return new TableCell<TradeRequest, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item.toString());
+                        if (getTableRow().getItem() != null) {
+                            TradeRequest request = (TradeRequest) getTableRow().getItem();
+                            if (request.getType().equals("BUY")) {
+                                setStyle("-fx-text-fill: #157936; -fx-font-weight: bold");
+                            } else {
+                                setStyle("-fx-text-fill: #ff0000; -fx-font-weight: bold");
+                            }
+                        }
+                    }
+                }
+            };
+        });
+
+        colQty1.setCellFactory(column -> {
+            return new TableCell<TradeRequest, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item.toString());
+                        if (getTableRow().getItem() != null) {
+                            TradeRequest request = (TradeRequest) getTableRow().getItem();
+                            if (request.getType().equals("BUY")) {
+                                setStyle("-fx-text-fill: #157936; -fx-font-weight: bold");
+                            } else {
+                                setStyle("-fx-text-fill: #ff0000; -fx-font-weight: bold");
+                            }
+                        }
+                    }
+                }
+            };
+        });
     }
 
     class TradingTask extends Task<Void> {
@@ -214,14 +316,17 @@ public class MonitorAppController implements Initializable {
             startTrading();
             while (!isCancelled()) {
                 Platform.runLater(() -> {
-                    checkQuantityCondition((int) initQtySlider.getValue(), (int) maxQtySlider.getValue());
                     // Update the value of quantity
                     textQty.setText(String.valueOf(monitor.getQuantity()));
+
                     // Update the content of notification
-                    notification.setText(String.valueOf(monitor.getNotification()));
+                    notification.setText(monitor.getStatus().getContent());
+                    boxNotification.setStyle(monitor.getStatus().getStyle());
+
                     if (monitor.getHandlingRequest() != null) {
                         textTrader.setText(monitor.getHandlingRequest().getNameTrader());
                     }
+
                     // Update the content of the client
                     textSell.setText(getSellersNameString());
                     textBuy.setText(getBuyersNameString());
@@ -230,7 +335,6 @@ public class MonitorAppController implements Initializable {
                     tableQueue.setItems(monitor.getQueuedRequest());
                     // Update the table of transaction history
                     tableHistory.setItems(monitor.getTransactionHistory());
-
                 });
                 Thread.sleep(1000);
             }

@@ -1,14 +1,12 @@
 import controller.MonitorAppController;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.application.Application;
-import javafx.stage.WindowEvent;
 
 public class StockMonitorApp extends Application {
     @Override
@@ -20,17 +18,29 @@ public class StockMonitorApp extends Application {
             String css = this.getClass().getResource("style.css").toExternalForm();
             scene.getStylesheets().add(css);
             primaryStage.setScene(scene);
-            MonitorAppController controller = MonitorAppController.getController();
-            primaryStage.setOnCloseRequest(event -> {
-                // Custom code to handle the close request
-                controller.stopTask();
-                System.exit(0);
-            });
+            primaryStage.setOnCloseRequest(event -> showQuitConfirmation(event));
             primaryStage.show();
         } catch (Exception e) {
             System.out.println("An error occurred while loading the FXML file: " + e);
             e.printStackTrace();
         }
+    }
+
+    public static void showQuitConfirmation(Event event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Exit");
+        alert.setHeaderText("Quit");
+        alert.setContentText("Are you sure you want to quit?");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                MonitorAppController controller = MonitorAppController.getController();
+                controller.stopTask();
+                System.exit(0);
+            } else {
+                event.consume();
+            }
+        });
+
     }
 
     public static void main(String[] args) {
