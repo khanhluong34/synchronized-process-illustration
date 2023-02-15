@@ -100,9 +100,12 @@ public class MonitorAppController implements Initializable {
         alert.showAndWait();
 
     }
-    void checkQuantityCondition(int initQty, int maxQty){
+    boolean checkQuantityCondition(int initQty, int maxQty){
         if (initQty > maxQty) {
             raiseAlert();
+            return false;
+        } else {
+            return true;
         }
     }
     void raiseAlert() {
@@ -124,12 +127,22 @@ public class MonitorAppController implements Initializable {
             int initQty = (int) initQtySlider.getValue();
             int maxQty = (int) maxQtySlider.getValue();
 
-            checkQuantityCondition(initQty, maxQty);
+            if (checkQuantityCondition(initQty, maxQty)) {
+                StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
+                task = new TradingTask(monitor, noBuyers, noSellers);
+                Thread thread = new Thread(task);
+                thread.start();
+            } else {
+                btnStart.setText("Start Session");
+                textQty.setText("...");
+                textTrader.setText("...");
+                textBuy.setText("...");
+                textSell.setText("...");
+                notification.setText("System status");
+                boxNotification.setStyle("-fx-background-color: #ff5757");
+                btnStart.setStyle("-fx-background-color: #3f51b5");
+            }
 
-            StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
-            task = new TradingTask(monitor, noBuyers, noSellers);
-            Thread thread = new Thread(task);
-            thread.start();
         } else {
             task.cancel();
             task = null;
