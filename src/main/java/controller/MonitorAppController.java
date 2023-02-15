@@ -100,11 +100,10 @@ public class MonitorAppController implements Initializable {
         alert.showAndWait();
 
     }
-    boolean checkQuantityCondition(int initQty, int maxQty){
+    void checkQuantityCondition(int initQty, int maxQty){
         if (initQty > maxQty) {
-            return false;
+            raiseAlert();
         }
-        return true;
     }
     void raiseAlert() {
         Alert alert = new Alert(AlertType.WARNING);
@@ -115,36 +114,34 @@ public class MonitorAppController implements Initializable {
     }
     @FXML
     void btnStartOnPressed(ActionEvent event) {
-        if (checkQuantityCondition((int) initQtySlider.getValue(), (int) maxQtySlider.getValue())) {
-            if (btnStart.getText().equals("Start Session") && task == null) {
-                btnStart.setText("Stop Session");
-                int noBuyers = (int) numberOfBuyers.getValue();
-                int noSellers = (int) numberOfSellers.getValue();
-                int latency = (int) latencySlider.getValue();
-                int initQty = (int) initQtySlider.getValue();
-                int maxQty = (int) maxQtySlider.getValue();
+        if (btnStart.getText().equals("Start Session") && task == null) {
+            btnStart.setText("Stop Session");
+            btnStart.setStyle("-fx-background-color: #ff5757");
 
-                checkQuantityCondition(initQty, maxQty);
+            int noBuyers = (int) numberOfBuyers.getValue();
+            int noSellers = (int) numberOfSellers.getValue();
+            int latency = (int) latencySlider.getValue();
+            int initQty = (int) initQtySlider.getValue();
+            int maxQty = (int) maxQtySlider.getValue();
 
-                StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
-                task = new TradingTask(monitor, noBuyers, noSellers);
-                Thread thread = new Thread(task);
-                thread.start();
-            } else {
-                task.cancel();
-                task = null;
-                btnStart.setText("Start Session");
-                textQty.setText("...");
-                textTrader.setText("...");
-                textBuy.setText("...");
-                textSell.setText("...");
-                notification.setText("Session stopped");
-                boxNotification.setStyle("-fx-background-color: #ff5757");
-            }
+            checkQuantityCondition(initQty, maxQty);
+
+            StockMonitor monitor = new StockMonitor(initQty, maxQty, latency);
+            task = new TradingTask(monitor, noBuyers, noSellers);
+            Thread thread = new Thread(task);
+            thread.start();
         } else {
-            raiseAlert();
+            task.cancel();
+            task = null;
+            btnStart.setText("Start Session");
+            textQty.setText("...");
+            textTrader.setText("...");
+            textBuy.setText("...");
+            textSell.setText("...");
+            notification.setText("Session stopped");
+            boxNotification.setStyle("-fx-background-color: #ff5757");
+            btnStart.setStyle("-fx-background-color: #3f51b5");
         }
-
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -261,7 +258,7 @@ public class MonitorAppController implements Initializable {
         private final StockMonitor monitor;
         private final String[] buyerNames = {"Luong", "Son", "Khanh", "Binh", "Jack"};
         private BuyerThread[] buyers;
-        private final String[] sellerNames = {"Bob", "David", "Zed", "Yasou", "Garen"};
+        private final String[] sellerNames = {"Quyet", "David", "Zed", "Yasou", "Garen"};
         private SellerThread[] sellers;
         private final int noBuyers;
         private final int noSellers;
@@ -304,7 +301,7 @@ public class MonitorAppController implements Initializable {
             }
 
             this.sellers = new SellerThread[noSellers];
-            int[] stockSelling = {60, 50, 70, 55, 25};
+            int[] stockSelling = {100, 50, 70, 55, 25};
             for (int i = 0; i < noSellers; i++) {
                 this.sellers[i] = new SellerThread(this.sellerNames[i], this.monitor, stockSelling[i]);
             }

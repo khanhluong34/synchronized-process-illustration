@@ -13,7 +13,6 @@ public class BuyerThread extends Thread {
     @Override
     public void run() {
         while (!Thread.interrupted()) {
-            // TODO: Request to buy stocks
             TradeRequest request = TradeRequest.createBuyRequest(this.getName(), buyQuantity);
             stockMonitor.buy(request);
         }

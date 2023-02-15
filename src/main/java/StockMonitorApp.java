@@ -14,7 +14,7 @@ public class StockMonitorApp extends Application {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("StockMonitorApp.fxml"));
             Scene scene = new Scene(root);
-            primaryStage.setTitle("Stock Trading App");
+            primaryStage.setTitle("SSC Monitoring App");
             String css = this.getClass().getResource("style.css").toExternalForm();
             scene.getStylesheets().add(css);
             primaryStage.setScene(scene);

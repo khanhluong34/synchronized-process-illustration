@@ -13,7 +13,6 @@ public class SellerThread extends Thread {
     @Override
     public void run() {
         while (!Thread.interrupted()) {
-            // TODO: Request to sell stocks
             TradeRequest request = TradeRequest.createSellRequest(this.getName(), sellQuantity);
             stockMonitor.sell(request);
         }

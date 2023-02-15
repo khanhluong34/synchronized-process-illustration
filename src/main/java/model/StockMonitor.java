@@ -40,6 +40,7 @@ public class StockMonitor {
         }
         return requests.toString();
     }
+
     // when remove a request from queue, we need to reindex the remains.
     public void reindexing() {
         for (int i = 0; i < this.queuedRequest.size(); i ++) {
@@ -48,71 +49,64 @@ public class StockMonitor {
     }
     public synchronized void buy(TradeRequest request) {
         handlingRequest = request;
+        // if the quantity of stock is not enough, then add the request into queue
         if (this.quantity < request.getQuantity()) {
-            // set the status
             this.status = MonitorStatusType.NOT_ENOUGH;
-            System.out.println("Not enough stocks available for purchase, " + request.getNameTrader() + " can not execute this transaction");
             try {
-                // wait until enough stock quantity for purchase
                 if (! this.queuedRequest.contains(request)) {
                     request.setIndex(queuedRequest.size() + 1);
                     this.queuedRequest.add(request);
                 }
+                // the thread is waiting for the notification from other thread
                 wait();
             } catch (InterruptedException e) {
                 System.out.print(e.getMessage());
             }
         } else {
+            // if the quantity of stock is enough, then remove the buy request from queue and reindexing the remains
             this.queuedRequest.remove(request);
             this.reindexing();
-            if (this.queuedRequest.size() > 0) {
-                System.out.println("Waiting set: " + currentRequest());
-            }
+            // simulate the latency of the transaction
             try {
                 Thread.sleep(latency);
-                System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
-                System.out.println("Thread interrupted: " + e.getMessage());
                 Thread.currentThread().interrupt();
             }
+            // the transaction is success, then change the quantity of stock
             this.quantity -= request.getQuantity();
             // the transaction is success, add the request into transaction history
             request.setIndex(transactionHistory.size() + 1);
             this.transactionHistory.add(request);
             // the transaction is success, then change the content of status
             this.status = MonitorStatusType.NORMAL;
-            System.out.println(Thread.currentThread().getName() + " bought " + request.getQuantity() + " stocks successfully");
-            // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
+            // notify the other thread to continue
             notify();
         }
     }
 
     public synchronized void sell(TradeRequest request) {
         this.handlingRequest = request;
+        // if the quantity of stock is full, then add the request into queue
         if (this.maxQuantity - this.quantity < request.getQuantity()) {
-            // set the status
             this.status = MonitorStatusType.FULL;
-            System.out.println("System holds enough stock quantity, preventing selling stock to protect the stock price, stop " + Thread.currentThread().getName());
             try {
                 if (! this.queuedRequest.contains(request)) {
                     request.setIndex(this.queuedRequest.size() + 1);
                     this.queuedRequest.add(request);
                 }
+                // the thread is waiting for the notification from other thread
                 wait();
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
         } else {
+            // if the quantity of stock is not full, then remove the sell request from queue and reindexing the remains
             this.queuedRequest.remove(request);
             this.reindexing();
-            if (this.queuedRequest.size() > 0) {
-                System.out.println("Waiting set: " + currentRequest());
-            }
+            // simulate the latency of the transaction
             try {
                 Thread.sleep(latency);
-                System.out.println("Transaction time ...");
             } catch (InterruptedException e) {
-                System.out.println("Thread interrupted: " + e.getMessage());
                 Thread.currentThread().interrupt();
             }
             this.quantity += request.getQuantity();
@@ -121,8 +115,7 @@ public class StockMonitor {
             this.transactionHistory.add(request);
             // the transaction is success, then change the content of status
             this.status = MonitorStatusType.NORMAL;
-            System.out.println(Thread.currentThread().getName() + " sold " + request.getQuantity() + " stocks successfully");
-            // notifies anyone of threads waiting in the wait set to wake up arbitrarily.
+            // notify the other thread to continue
             notify();
         }
     }
