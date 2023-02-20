@@ -121,6 +121,11 @@ public class MonitorAppController implements Initializable {
             btnStart.setText("Stop Session");
             btnStart.setStyle("-fx-background-color: #ff5757");
 
+            textQty.setText("...");
+            textTrader.setText("...");
+            textBuy.setText("...");
+            textSell.setText("...");
+
             int noBuyers = (int) numberOfBuyers.getValue();
             int noSellers = (int) numberOfSellers.getValue();
             int latency = (int) latencySlider.getValue();
@@ -134,10 +139,6 @@ public class MonitorAppController implements Initializable {
                 thread.start();
             } else {
                 btnStart.setText("Start Session");
-                textQty.setText("...");
-                textTrader.setText("...");
-                textBuy.setText("...");
-                textSell.setText("...");
                 notification.setText("System status");
                 boxNotification.setStyle("-fx-background-color: #ff5757");
                 btnStart.setStyle("-fx-background-color: #3f51b5");
@@ -147,10 +148,6 @@ public class MonitorAppController implements Initializable {
             task.cancel();
             task = null;
             btnStart.setText("Start Session");
-            textQty.setText("...");
-            textTrader.setText("...");
-            textBuy.setText("...");
-            textSell.setText("...");
             notification.setText("Session stopped");
             boxNotification.setStyle("-fx-background-color: #ff5757");
             btnStart.setStyle("-fx-background-color: #3f51b5");
@@ -345,6 +342,10 @@ public class MonitorAppController implements Initializable {
                     tableQueue.setItems(monitor.getQueuedRequest());
                     // Update the table of transaction history
                     tableHistory.setItems(monitor.getTransactionHistory());
+
+                    // Scroll to the bottom of the table
+                    tableHistory.scrollTo(tableHistory.getItems().size() - 1);
+                    tableQueue.scrollTo(tableQueue.getItems().size() - 1);
                 });
                 Thread.sleep(1000);
             }
